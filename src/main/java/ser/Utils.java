@@ -381,7 +381,7 @@ public class Utils {
         }
         return null;
     }
-    public static String saveDocExcel(String templatePath, Integer shtIx, String tpltSavePath, JSONObject pbks, List<String> paths) throws IOException {
+    public static String saveDocExcel(String templatePath, Integer shtIx, String tpltSavePath, JSONObject pbks, List<String> paths, String formType) throws IOException {
 
         FileInputStream tist = new FileInputStream(templatePath);
         XSSFWorkbook twrb = new XSSFWorkbook(tist);
@@ -411,15 +411,18 @@ public class Utils {
                 }
             }
         }
-
-        addPictureToExcel(twrb,tsht,paths);
-
+        if(Objects.equals(formType, "KSI")) {
+            addPictureToExcelKSI(twrb, tsht, paths);
+        }
+        if(Objects.equals(formType, "KTI")) {
+            addPictureToExcelKTI(twrb, tsht, paths);
+        }
         FileOutputStream tost = new FileOutputStream(tpltSavePath);
         twrb.write(tost);
         tost.close();
         return tpltSavePath;
     }
-    public static void addPictureToExcel(XSSFWorkbook workbook, Sheet sheet, List<String> picturePaths) throws IOException {
+    public static void addPictureToExcelKSI(XSSFWorkbook workbook, Sheet sheet, List<String> picturePaths) throws IOException {
         int startColBefore = 1;
         int startRowBefore = 14;
         int endColBefore = 34;
@@ -429,6 +432,61 @@ public class Utils {
         int startRowAfter = 14;
         int endColAfter = 69;
         int endRowAfter = 30;
+
+        for(String path : picturePaths){
+            String fileFullName = path.split("/")[path.split("/").length-1];
+            String fileName = FilenameUtils.removeExtension(fileFullName);
+            String fileNr = fileName.split("_")[fileName.split("_").length-1];
+            String type = (fileName.contains("BEFORE") ? "BEFORE" : "AFTER");
+            //FileInputStream stream = new FileInputStream("C:\\tmp\\Resim1.png");
+            FileInputStream stream = new FileInputStream(path);
+            CreationHelper helper = workbook.getCreationHelper();
+            Drawing drawingPatriarch = sheet.createDrawingPatriarch();
+            ClientAnchor anchor = helper.createClientAnchor();
+            anchor.setAnchorType(ClientAnchor.AnchorType.MOVE_AND_RESIZE);
+            int pictureIndex = workbook.addPicture(IOUtils.toByteArray(stream), org.apache.poi.ss.usermodel.Workbook.PICTURE_TYPE_PNG);
+            if(type.equals("BEFORE")) {
+                if(Objects.equals(fileNr, "1")) {
+                    anchor.setCol1(startColBefore);
+                    anchor.setRow1(startRowBefore);
+                    anchor.setCol2(endColBefore);
+                    anchor.setRow2(endRowBefore);
+                }
+                else{
+                    anchor.setCol1(startColBefore);
+                    anchor.setRow1(endRowBefore + 2);
+                    anchor.setCol2(endColBefore);
+                    anchor.setRow2(endRowBefore + (endRowBefore - startRowBefore) + 2);
+                }
+            }
+            if(type.equals("AFTER")) {
+                if(Objects.equals(fileNr, "1")) {
+                    anchor.setCol1(startColAfter);
+                    anchor.setRow1(startRowAfter);
+                    anchor.setCol2(endColAfter);
+                    anchor.setRow2(endRowAfter);
+                }
+                else{
+                    anchor.setCol1(startColAfter);
+                    anchor.setRow1(endRowAfter + 2);
+                    anchor.setCol2(endColAfter);
+                    anchor.setRow2(endRowAfter + (endRowAfter - startRowAfter) + 2);
+                }
+            }
+            Picture pict = drawingPatriarch.createPicture(anchor,pictureIndex);
+            //pict.resize();
+        }
+    }
+    public static void addPictureToExcelKTI(XSSFWorkbook workbook, Sheet sheet, List<String> picturePaths) throws IOException {
+        int startColBefore = 1;
+        int startRowBefore = 9;
+        int endColBefore = 34;
+        int endRowBefore = 25;
+
+        int startColAfter = 37;
+        int startRowAfter = 9;
+        int endColAfter = 69;
+        int endRowAfter = 25;
 
         for(String path : picturePaths){
             String fileFullName = path.split("/")[path.split("/").length-1];

@@ -39,10 +39,10 @@ public class KTIForm extends UnifiedAgent {
             Utils.session = getSes();
             Utils.bpm = getBpm();
             Utils.server = Utils.session.getDocumentServer();
-            Utils.loadDirectory(Conf.GenerateKSI.MainPath);
+            Utils.loadDirectory(Conf.GenerateKTI.MainPath);
 
             //helper = new ProcessHelper(getSes());
-            log.info("----KSIForm Process Agent Started -----:" + mainTask.getID());
+            log.info("----KTIForm Process Agent Started -----:" + mainTask.getID());
             notes = mainTask.getDescriptorValue("Notes");
             if (mainTask.getProcessInstance().findLockInfo().getOwnerID() != null) {
                 log.error("Task is locked.." + mainTask.getID() + "..restarting agent");
@@ -60,30 +60,19 @@ public class KTIForm extends UnifiedAgent {
                 }
                 if(Objects.equals(type, "AFTER")){
                     cntA++;
-                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.MainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntA);///"KSIPicture_abdf12323_BEFORE_1.png"
-                    exportedFiles.add(Conf.Paths.MainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntA + ".png");
+                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.KTIMainPath,"KTIPicture_" + uniqueId + "_" + type + "_" + cntA);///"KTIPicture_abdf12323_BEFORE_1.png"
+                    exportedFiles.add(Conf.Paths.KTIMainPath + "/" + "KTIPicture_" + uniqueId + "_" + type + "_" + cntA + ".png");
                 }
                 if(Objects.equals(type, "BEFORE")){
                     cntB++;
-                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.MainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntB);///"KSIPicture_abdf12323_BEFORE_1.png"
-                    exportedFiles.add(Conf.Paths.MainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntB + ".png");
+                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.KTIMainPath,"KTIPicture_" + uniqueId + "_" + type + "_" + cntB);///"KTIPicture_abdf12323_BEFORE_1.png"
+                    exportedFiles.add(Conf.Paths.KTIMainPath + "/" + "KTIPicture_" + uniqueId + "_" + type + "_" + cntB + ".png");
                 }
             }
-            String mtpn = "KSI_FORM_TEMPLATE";
+            String mtpn = "KTI_FORM_TEMPLATE";
 
-           /*  projects = Utils.getProjectWorkspaces(helper);
-            IDocument mtpl = null;
-            for (String prjn : projects.keySet()) {
-                IInformationObject prjt = (IInformationObject) projects.get(prjn);
-                IDocument dtpl = Utils.getTemplateDocument(prjt, mtpn);
-                if (dtpl == null) {
-                    continue;
-                }
-                mtpl = dtpl;
-                break;
-            }*/
             JSONObject dbks = new JSONObject();
-            dbks.put("FormNo", "FRM0001");
+            dbks.put("FormNo", "KTI0001");
             dbks.put("RevisionNo", "1");
             dbks.put("Date", "");
             dbks.put("OrgDepartment", mainTask.getDescriptorValue("OrgDepartment"));
@@ -92,54 +81,25 @@ public class KTIForm extends UnifiedAgent {
             dbks.put("Solution", mainTask.getDescriptorValue("Solution"));
             dbks.put("Earning", mainTask.getDescriptorValue("Earning"));
 
-            dbks.put("ProblemTurleri", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri2", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri2"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri3", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri3"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri4", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri4"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri5", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri5"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri6", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri6"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri7", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri7"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri8", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri8"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri9", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri9"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri10", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri10"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri11", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri11"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri12", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri12"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri13", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri13"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri14", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri14"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri15", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri15"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri16", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri16"), "False") ? "X" : ""));
-            dbks.put("ProblemTurleri17", (!Objects.equals(mainTask.getDescriptorValue("ProblemTurleri17"), "False") ? "X" : ""));
-
             //String tplMailPath = Utils.exportDocument(mtpl, Conf.GenerateKSI.MainPath, mtpn + "[" + uniqueId + "]");
-            String tplMailPath = Conf.GenerateKSI.MainTemplatePath + "/" + mtpn + ".xlsx";
+            String tplMailPath = Conf.GenerateKTI.MainTemplatePath + "/" + mtpn + ".xlsx";
             String mailExcelPath = Utils.saveDocExcel(
                     tplMailPath,
                     0,
-                    Conf.GenerateKSI.MainPath + "/" + mtpn + "[" + uniqueId + "].xlsx",
+                    Conf.GenerateKTI.MainPath + "/" + mtpn + "[" + uniqueId + "].xlsx",
                     dbks,
-                    exportedFiles
+                    exportedFiles,
+                    "KTI"
             );
             String mailHtmlPath = Utils.convertExcelToHtml(mailExcelPath,
                     0,
-                    Conf.GenerateKSI.MainPath + "/" + mtpn + "[" + uniqueId + "].html");
+                    Conf.GenerateKTI.MainPath + "/" + mtpn + "[" + uniqueId + "].html");
 
-            String mailPdfPath = Utils.convertExcelToPdf(mailExcelPath, Conf.GenerateKSI.MainPath + "/" + mtpn + "[" + uniqueId + "].pdf");
+            String mailPdfPath = Utils.convertExcelToPdf(mailExcelPath, Conf.GenerateKTI.MainPath + "/" + mtpn + "[" + uniqueId + "].pdf");
 
             this.archiveNewTemplate(mailPdfPath);
-            /*String umail = processOwner.getEMailAddress();
-            List<String> mails = new ArrayList<>();
-            log.info("Mail To : " + String.join(";", mails));
-            if (umail != null) {
-                mails.add(umail);
-                JSONObject mail = new JSONObject();
-                mail.put("To", String.join(";", mails));
-                mail.put("Subject", "Deleted Documents");
-                mail.put("BodyHTMLFile", mailHtmlPath);
-                Utils.sendHTMLMail(mail, null);
-            } else {
-                log.info("Mail adress is null :" + processOwner.getFullName());
-            }*/
-            log.info("----KSIForm Process Agent Finished -----");
+
+            log.info("----KTIForm Process Agent Finished -----");
 
         } catch (Exception e) {
             log.error("Exception Caught");

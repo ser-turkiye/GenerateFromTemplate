@@ -3,6 +3,7 @@ package junit
 import de.ser.doxis4.agentserver.AgentExecutionResult
 import org.junit.*
 import ser.KSIForm
+import ser.KTIForm
 
 class ExampleTests {
 
@@ -21,9 +22,10 @@ class ExampleTests {
     @Test
     void testForAgentResult() {
 
-        def agent = new KSIForm();
+        def agent = new KTIForm();
 
-        binding["AGENT_EVENT_OBJECT_CLIENT_ID"] = "ST0aBPM_PLADIS243e194b33-fe89-4b96-92e1-a770c9a0890a182024-04-16T19:51:52.372Z011"
+        //binding["AGENT_EVENT_OBJECT_CLIENT_ID"] = "ST0aBPM_PLADIS243e194b33-fe89-4b96-92e1-a770c9a0890a182024-04-16T19:51:52.372Z011"
+        binding["AGENT_EVENT_OBJECT_CLIENT_ID"] = "ST0aBPM_PLADIS246f43c37e-836e-4111-aca5-a7303057d498182024-04-17T09:30:11.209Z011"
 
         def result = (AgentExecutionResult)agent.execute(binding.variables)
         System.out.println(result)

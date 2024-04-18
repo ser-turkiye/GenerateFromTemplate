@@ -8,7 +8,8 @@ import java.util.List;
 
 public class Conf {
     public static class Paths {
-        public static final String MainPath = "C:/tmp2/bulk/GenerateKSI";
+        public static final String KSIMainPath = "C:/tmp2/bulk/GenerateKSI";
+        public static final String KTIMainPath = "C:/tmp2/bulk/GenerateKTI";
         //hello
     }
     public static class Licences{
@@ -18,6 +19,10 @@ public class Conf {
         public static final String MainTemplatePath = "C:/tmp2/templates";
         public static final String MainPath = "C:/tmp2/bulk/GenerateKSI";
         public static final String WebBase = "http://localhost/webcube/";
+    }
+    public static class GenerateKTI {
+        public static final String MainTemplatePath = "C:/tmp2/templates";
+        public static final String MainPath = "C:/tmp2/bulk/GenerateKTI";
     }
     public static class GenerateKSISheetIndex {
         public static final Integer Deletion = 0;

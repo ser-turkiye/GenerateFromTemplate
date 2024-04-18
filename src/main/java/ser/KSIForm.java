@@ -60,13 +60,13 @@ public class KSIForm extends UnifiedAgent {
                 }
                 if(Objects.equals(type, "AFTER")){
                     cntA++;
-                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.MainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntA);///"KSIPicture_abdf12323_BEFORE_1.png"
-                    exportedFiles.add(Conf.Paths.MainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntA + ".png");
+                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.KSIMainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntA);///"KSIPicture_abdf12323_BEFORE_1.png"
+                    exportedFiles.add(Conf.Paths.KSIMainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntA + ".png");
                 }
                 if(Objects.equals(type, "BEFORE")){
                     cntB++;
-                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.MainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntB);///"KSIPicture_abdf12323_BEFORE_1.png"
-                    exportedFiles.add(Conf.Paths.MainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntB + ".png");
+                    Utils.exportDocument((IDocument) xdoc,Conf.Paths.KSIMainPath,"KSIPicture_" + uniqueId + "_" + type + "_" + cntB);///"KSIPicture_abdf12323_BEFORE_1.png"
+                    exportedFiles.add(Conf.Paths.KSIMainPath + "/" + "KSIPicture_" + uniqueId + "_" + type + "_" + cntB + ".png");
                 }
             }
             String mtpn = "KSI_FORM_TEMPLATE";
@@ -83,7 +83,7 @@ public class KSIForm extends UnifiedAgent {
                 break;
             }*/
             JSONObject dbks = new JSONObject();
-            dbks.put("FormNo", "FRM0001");
+            dbks.put("FormNo", "KSI0001");
             dbks.put("RevisionNo", "1");
             dbks.put("Date", "");
             dbks.put("OrgDepartment", mainTask.getDescriptorValue("OrgDepartment"));
@@ -117,7 +117,8 @@ public class KSIForm extends UnifiedAgent {
                     0,
                     Conf.GenerateKSI.MainPath + "/" + mtpn + "[" + uniqueId + "].xlsx",
                     dbks,
-                    exportedFiles
+                    exportedFiles,
+                    "KSI"
             );
             String mailHtmlPath = Utils.convertExcelToHtml(mailExcelPath,
                     0,
